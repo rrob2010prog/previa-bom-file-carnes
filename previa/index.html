@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bom Filé Casa de Carnes · Pedidos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#141010; --preto-2:#241a18; --vermelho:#b3171d; --vermelho-2:#d9262c; --dourado:#d6a84a;
+    --fundo:#f7f2ec; --papel:#fffdf9; --texto:#221816; --suave:#76655e; --linha:#eadfd3; --verde:#25d366;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Nunito,system-ui,sans-serif;background:var(--fundo);color:var(--texto);padding-bottom:124px}
+  .demo{background:var(--preto);color:var(--dourado);font-size:12px;text-align:center;padding:6px 16px}
+  header{background:radial-gradient(circle at 50% -10%,#4a1412,var(--preto) 70%);color:#fff;text-align:center;padding:22px 16px 26px;border-radius:0 0 28px 28px}
+  header img{width:96px;height:96px;border-radius:50%;border:3px solid var(--dourado);display:block;margin:0 auto 10px;background:#000}
+  header h1{font-family:Oswald,Impact,sans-serif;font-weight:700;font-size:30px;letter-spacing:.02em;text-transform:uppercase}
+  header p{opacity:.85;font-size:14px;margin-top:4px}
+  .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .chip{background:rgba(255,255,255,.1);border-radius:99px;padding:5px 12px;font-size:12.5px}
+  .chip b{color:var(--dourado)}
+  nav{position:sticky;top:0;z-index:5;background:var(--fundo);padding:12px 0 8px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav a{display:inline-block;margin-left:16px;padding:8px 14px;border-radius:99px;background:#fff;border:1px solid var(--linha);color:var(--preto);font-weight:700;font-size:14px;text-decoration:none}
+  nav a:last-child{margin-right:16px}
+  nav a.ativo{background:var(--vermelho);border-color:var(--vermelho);color:#fff}
+  main{max-width:640px;margin:0 auto;padding:0 16px}
+  h2{font-family:Oswald,Impact,sans-serif;font-weight:500;font-size:21px;text-transform:uppercase;letter-spacing:.02em;color:var(--preto);margin:22px 0 4px;scroll-margin-top:64px}
+  .regra{color:var(--suave);font-size:13px;margin-bottom:10px;line-height:1.45}
+  .item{background:var(--papel);border:1px solid var(--linha);border-radius:16px;padding:14px;margin-bottom:10px}
+  .item h3{font-size:16px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .tag{font-size:11px;font-weight:800;color:var(--vermelho);background:#fbe7e6;border-radius:6px;padding:2px 6px;white-space:nowrap}
+  .item p{color:var(--suave);font-size:13.5px;margin:3px 0 10px;line-height:1.4}
+  .opcoes{display:flex;flex-wrap:wrap;gap:8px}
+  .op{flex:1 1 130px;display:flex;justify-content:space-between;align-items:center;gap:8px;border:1.5px solid var(--linha);background:#fff;border-radius:12px;padding:9px 10px;font:inherit;font-size:14px;cursor:pointer;color:var(--texto)}
+  .op b{color:var(--vermelho)}
+  .op i{font-style:normal;color:var(--suave);font-size:12.5px}
+  .op:active{transform:scale(.98)}
+  .op .qt{background:var(--vermelho);color:#fff;border-radius:99px;min-width:22px;height:22px;font-size:12px;font-weight:800;display:none;align-items:center;justify-content:center}
+  .op.tem{border-color:var(--vermelho)}
+  .op.tem .qt{display:inline-flex}
+  select.sabor{width:100%;margin-bottom:8px;padding:9px;border-radius:10px;border:1.5px solid var(--linha);font:inherit;font-size:14px;background:#fff}
+  .barra{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--fundo) 30%)}
+  .barra button{width:100%;max-width:608px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;border:0;border-radius:16px;padding:16px 18px;background:var(--preto);color:#fff;font:inherit;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 6px 20px rgba(20,16,16,.35)}
+  .barra button:disabled{opacity:.45;cursor:default}
+  .barra span.total{color:var(--dourado)}
+  .fundo{position:fixed;inset:0;background:rgba(15,10,10,.55);display:none;z-index:20}
+  .fundo.aberto{display:block}
+  .gaveta{position:absolute;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;background:var(--papel);border-radius:22px 22px 0 0;padding:20px 16px 24px;max-width:640px;margin:0 auto}
+  .gaveta h2{margin-top:0}
+  .linha{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--linha);font-size:14.5px}
+  .linha .nome{flex:1}
+  .linha .nome small{display:block;color:var(--suave)}
+  .menos,.mais{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--vermelho);background:#fff;color:var(--vermelho);font-weight:800;font-size:16px;cursor:pointer}
+  label{display:block;font-weight:700;font-size:14px;margin:14px 0 6px}
+  input,textarea,select.campo{width:100%;padding:11px;border-radius:12px;border:1.5px solid var(--linha);font:inherit;font-size:15px;background:#fff}
+  .seg{display:flex;gap:8px;flex-wrap:wrap}
+  .seg button{flex:1 1 110px;padding:10px;border-radius:12px;border:1.5px solid var(--linha);background:#fff;font:inherit;font-weight:700;cursor:pointer;color:var(--texto)}
+  .seg button.sel{border-color:var(--vermelho);background:#fdeceb;color:var(--preto)}
+  .tot{display:flex;justify-content:space-between;font-weight:800;font-size:18px;margin:16px 0 4px}
+  .obs{color:var(--suave);font-size:12.5px;line-height:1.5}
+  .aviso{background:#fff6e0;border:1px solid #f0d9a0;color:#6b4f12;border-radius:12px;padding:10px 12px;font-size:13px;margin-top:12px;display:none}
+  .enviar{width:100%;margin-top:16px;border:0;border-radius:16px;padding:16px;background:var(--verde);color:#fff;font:inherit;font-weight:800;font-size:16px;cursor:pointer}
+  .fechar{float:right;border:0;background:none;font-size:26px;line-height:1;color:var(--suave);cursor:pointer}
+  .selo{display:table;margin:0 auto 6px;background:var(--vermelho);color:#fff;font-weight:800;font-size:11px;letter-spacing:.04em;padding:4px 9px;border-radius:8px}
+  h2 .selo{display:inline-block;vertical-align:middle;margin:0 0 0 8px;font-family:Nunito,sans-serif}
+  footer{text-align:center;color:var(--suave);font-size:12.5px;margin:28px 0 8px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="demo">Prévia feita pela Lumina Serviços Digitais para a Bom Filé · ainda não publicada · os pedidos de teste vão para o WhatsApp da Lumina</div>
+<header>
+  <img src="data:image/jpeg;base64,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" alt="Logotipo Bom Filé Casa de Carnes">
+  <h1>Bom Filé</h1>
+  <p>Casa de Carnes · kits de churrasco, espetinhos e cortes selecionados</p>
+  <div class="chips">
+    <span class="chip"><b>★ 4,6</b> no Google</span>
+    <span class="chip">📍 Vale das Pedrinhas</span>
+    <span class="chip">📍 Mercado do Rio Vermelho</span>
+    <span class="chip">🚚 Salvador e Lauro de Freitas</span>
+  </div>
+</header>
+
+<nav id="nav"></nav>
+<main id="cardapio"></main>
+
+<footer>
+  Av. Vale das Pedrinhas, 22 · Nordeste de Amaralina · Mercado do Rio Vermelho · Salvador-BA<br>
+  Central de pedidos (71) 98801-3333 · Preços sujeitos a confirmação no WhatsApp
+</footer>
+
+<div class="barra"><div class="selo">PRÉVIA · não publicada</div><button id="verPedido" disabled><span>🛒 <span id="qtd">Monte seu churrasco</span></span><span class="total" id="totalBarra"></span></button></div>
+
+<div class="fundo" id="fundo">
+  <div class="gaveta">
+    <button class="fechar" id="fechar" aria-label="Fechar">×</button>
+    <h2>Seu pedido <span class="selo">PRÉVIA · não publicada</span></h2>
+    <div id="itens"></div>
+    <div class="aviso" id="avisoMinimo"></div>
+    <label for="nome">Seu nome</label>
+    <input id="nome" autocomplete="name" placeholder="Como podemos te chamar?">
+    <label>Como quer receber?</label>
+    <div class="seg" id="modo"><button data-v="Entrega" class="sel">🚚 Entrega</button><button data-v="Retirada">🏠 Retirar na loja</button></div>
+    <div id="blocoEntrega">
+      <label for="cidade">Cidade</label>
+      <select id="cidade" class="campo"><option>Salvador</option><option>Lauro de Freitas</option></select>
+      <label for="endereco">Endereço</label>
+      <textarea id="endereco" rows="2" placeholder="Rua, número, bairro e ponto de referência"></textarea>
+    </div>
+    <div id="blocoLoja" style="display:none">
+      <label for="loja">Retirar em</label>
+      <select id="loja" class="campo"><option>Vale das Pedrinhas</option><option>Mercado do Rio Vermelho</option></select>
+    </div>
+    <label for="data">Para quando?</label>
+    <input id="data" type="date">
+    <p class="obs">Espetos e kits saem com 1 dia de antecedência.</p>
+    <label>Pagamento</label>
+    <div class="seg" id="pag"><button data-v="Pix" class="sel">Pix</button><button data-v="Cartão">Cartão</button><button data-v="Dinheiro">Dinheiro</button></div>
+    <label for="obs">Observação (opcional)</label>
+    <input id="obs" placeholder="Ex.: ponto da carne, horário de entrega">
+    <div class="tot"><span>Total</span><span id="totalGaveta"></span></div>
+    <p class="obs" id="obsTotal"></p>
+    <button class="enviar" id="enviar">Enviar pedido pelo WhatsApp</button>
+  </div>
+</div>
+
+<script>
+// Número que recebe os pedidos. Na prévia é o WhatsApp da Lumina; no catálogo da Bom Filé entra a central (71) 98801-3333.
+const WHATS = '5511954746914';
+const TAXA = 20;        // taxa de entrega informada pela Bom Filé (16/11)
+const MINIMO_ESPETOS = 5; // pacotes; uma arte diz 5 e a tabela diz 8: confirmar
+
+// Itens e preços tirados das imagens que a Bom Filé mandou no WhatsApp em 16/11/2026.
+// preco null = preço a confirmar com eles (a tabela de espetos vai de R$ 19,99 a R$ 79,99, sem dizer qual é qual).
+const CARDAPIO = [
+  { id:'kits', nome:'Kits churrasco', regra:'Já vêm temperados e com carvão de brinde.', itens:[
+    { nome:'Kit 01', tag:'carvão grátis', desc:'Toscana Aurora Premium 500 g, asinha temperada 500 g, fígado 500 g e fraldinha temperada 500 g.', op:[['Kit',69.90]] },
+    { nome:'Kit 02 Aurora Toscana Premium', tag:'carvão grátis', desc:'Toscana, apimentada, asinha temperada, cupim temperado e fraldinha temperada, 500 g de cada.', op:[['Kit',99.90]] },
+    { nome:'Kit para 6, 8 ou 10 pessoas', desc:'Kits 03, 04 e 05 dos destaques do Instagram.', sabores:['Kit 03 · até 6 pessoas','Kit 04 · até 8 pessoas','Kit 05 · até 10 pessoas'], op:[['Kit',null]] },
+  ]},
+  { id:'espetos', nome:'Espetinhos', regra:`Temperados e embalados a vácuo, 100 g cada, pacote com 10 unidades. Pedido mínimo de ${MINIMO_ESPETOS} pacotes.`, espeto:true, itens:[
+    { nome:'Kit 50 espetinhos', tag:'mais pedido', desc:'20 de carne, 10 mistos, 10 de frango e 10 de picanha suína.', op:[['Sem carvão',200],['Com carvão 2 kg',210]] },
+    { nome:'Pacote de espetos', desc:'Escolha o corte. 10 unidades por pacote.', sabores:['Fraldinha','Filé','Alcatra','Bananinha','Cupim','Frango','Carne com toscana','Medalhão'], op:[['Pacote c/ 10',null]] },
+  ]},
+  { id:'cortes', nome:'Cortes e porcionados', regra:'Cortes selecionados, porcionados em pacotes de 5 kg.', itens:[
+    { nome:'Porcionado 5 kg', desc:'Escolha o corte.', sabores:['Fraldinha','Alcatra','Cupim','Filé','Frango'], op:[['Pacote 5 kg',null]] },
+  ]},
+  { id:'festas', nome:'Encomendas de fim de ano', regra:'Garanta o seu com antecedência.', itens:[
+    { nome:'Leitão in natura', tag:'encomenda', desc:'Para as festas de fim de ano. Escolha a data na hora de enviar.', op:[['Leitão',null]] },
+  ]},
+];
+
+const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const pedido = new Map();
+
+const nav = document.getElementById('nav'), main = document.getElementById('cardapio');
+CARDAPIO.forEach((cat,ci) => {
+  nav.insertAdjacentHTML('beforeend', `<a href="#${cat.id}" class="${ci?'':'ativo'}">${cat.nome}</a>`);
+  const sec = document.createElement('section');
+  sec.innerHTML = `<h2 id="${cat.id}">${cat.nome}</h2><p class="regra">${cat.regra}</p>`;
+  cat.itens.forEach(it => {
+    const card = document.createElement('div');
+    card.className = 'item';
+    const sel = it.sabores ? `<select class="sabor" aria-label="Opção de ${it.nome}">${it.sabores.map(s=>`<option>${s}</option>`).join('')}</select>` : '';
+    card.innerHTML = `<h3><span>${it.nome}</span>${it.tag?`<span class="tag">${it.tag}</span>`:''}</h3><p>${it.desc}</p>${sel}<div class="opcoes">${it.op.map(([t,p],oi)=>
+      `<button class="op" data-oi="${oi}"><span>${t}</span><span>${p==null?'<i>preço a confirmar</i>':`<b>${brl(p)}</b>`} <span class="qt"></span></span></button>`).join('')}</div>`;
+    card.querySelectorAll('.op').forEach(b => b.onclick = () => {
+      const [t,p] = it.op[b.dataset.oi];
+      const sabor = card.querySelector('.sabor')?.value || '';
+      const k = [it.nome,t,sabor].join('|');
+      const atual = pedido.get(k) || {nome:it.nome,tam:t,sabor,preco:p,qt:0,espeto:!!cat.espeto && it.nome!=='Kit 50 espetinhos', pacotes: it.nome==='Kit 50 espetinhos'?5:1};
+      atual.qt++; pedido.set(k,atual); atualizar();
+    });
+    sec.appendChild(card);
+  });
+  main.appendChild(sec);
+});
+
+const links = [...nav.querySelectorAll('a')];
+const vigia = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) links.forEach(a => a.classList.toggle('ativo', a.hash === '#' + e.target.id));
+}), {rootMargin:'-70px 0px -70% 0px'});
+CARDAPIO.forEach(c => vigia.observe(document.getElementById(c.id)));
+
+function total(){
+  let t=0,q=0,aConfirmar=0,pacotes=0;
+  pedido.forEach(i=>{ q+=i.qt; if(i.preco==null) aConfirmar+=i.qt; else t+=i.preco*i.qt; if(i.espeto) pacotes+=i.qt; });
+  return {t,q,aConfirmar,pacotes};
+}
+
+const fundo = document.getElementById('fundo');
+const fechar = () => fundo.classList.remove('aberto');
+
+function atualizar(){
+  const {t,q,aConfirmar,pacotes} = total();
+  const entrega = modo && modo()==='Entrega' ? TAXA : 0;
+  document.getElementById('verPedido').disabled = !q;
+  document.getElementById('qtd').textContent = q ? `Ver pedido (${q} ${q>1?'itens':'item'})` : 'Monte seu churrasco';
+  document.getElementById('totalBarra').textContent = q ? brl(t) + (aConfirmar?' +':'') : '';
+  document.getElementById('totalGaveta').textContent = brl(t + (q?entrega:0)) + (aConfirmar?' +':'');
+  document.getElementById('obsTotal').textContent =
+    (entrega?`Inclui a entrega de ${brl(TAXA)}. `:'') + (aConfirmar?`${aConfirmar} ${aConfirmar>1?'itens têm':'item tem'} preço confirmado pela loja no WhatsApp.`:'');
+  const av = document.getElementById('avisoMinimo');
+  if (pacotes && pacotes < MINIMO_ESPETOS){ av.style.display='block'; av.textContent = `Pacotes de espeto: ${pacotes} de ${MINIMO_ESPETOS} do pedido mínimo. Faltam ${MINIMO_ESPETOS-pacotes}.`; }
+  else av.style.display='none';
+  document.querySelectorAll('.item').forEach(card => {
+    const nome = card.querySelector('h3 span').textContent, sabor = card.querySelector('.sabor')?.value || '';
+    card.querySelectorAll('.op').forEach(b => {
+      const tam = b.querySelector('span').textContent, i = pedido.get([nome,tam,sabor].join('|'));
+      b.classList.toggle('tem', !!i); b.querySelector('.qt').textContent = i ? i.qt : '';
+    });
+  });
+  const lista = document.getElementById('itens');
+  lista.innerHTML = '';
+  pedido.forEach((i,k) => {
+    const d = document.createElement('div'); d.className='linha';
+    d.innerHTML = `<div class="nome">${i.qt}× ${i.nome}<small>${[i.tam,i.sabor].filter(Boolean).join(' · ')} · ${i.preco==null?'preço a confirmar':brl(i.preco*i.qt)}</small></div>
+      <button class="menos" aria-label="Tirar um">−</button><button class="mais" aria-label="Pôr mais um">+</button>`;
+    d.querySelector('.menos').onclick = () => { i.qt--; if(!i.qt) pedido.delete(k); atualizar(); if(!total().q) fechar(); };
+    d.querySelector('.mais').onclick = () => { i.qt++; atualizar(); };
+    lista.appendChild(d);
+  });
+}
+document.querySelectorAll('.sabor').forEach(s => s.onchange = atualizar);
+
+document.getElementById('verPedido').onclick = () => fundo.classList.add('aberto');
+document.getElementById('fechar').onclick = fechar;
+fundo.onclick = e => { if (e.target===fundo) fechar(); };
+
+function segmento(id, cb){ const el=document.getElementById(id); el.querySelectorAll('button').forEach(b=>b.onclick=()=>{el.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b)); cb&&cb(b.dataset.v);}); return () => el.querySelector('.sel').dataset.v; }
+var modo = segmento('modo', v => {
+  document.getElementById('blocoEntrega').style.display = v==='Entrega' ? '' : 'none';
+  document.getElementById('blocoLoja').style.display = v==='Entrega' ? 'none' : '';
+  atualizar();
+});
+const pag = segmento('pag');
+
+// data mínima: amanhã (regra de 1 dia de antecedência)
+const amanha = new Date(); amanha.setDate(amanha.getDate()+1);
+const iso = d => new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+const campoData = document.getElementById('data');
+campoData.min = iso(amanha); campoData.value = iso(amanha);
+
+document.getElementById('enviar').onclick = () => {
+  const nome = document.getElementById('nome').value.trim();
+  const end = document.getElementById('endereco').value.trim();
+  const {t,pacotes,aConfirmar} = total();
+  if (!nome) return document.getElementById('nome').focus();
+  if (modo()==='Entrega' && !end) return document.getElementById('endereco').focus();
+  if (pacotes && pacotes < MINIMO_ESPETOS) return document.getElementById('avisoMinimo').scrollIntoView({behavior:'smooth'});
+  if (!campoData.value || campoData.value < campoData.min) { campoData.value = campoData.min; return campoData.focus(); }
+  const [a,m,d] = campoData.value.split('-');
+  const linhas = [];
+  pedido.forEach(i => linhas.push(`• ${i.qt}x ${i.nome} (${[i.tam,i.sabor].filter(Boolean).join(', ')}): ${i.preco==null?'preço a confirmar':brl(i.preco*i.qt)}`));
+  const entrega = modo()==='Entrega';
+  const obs = document.getElementById('obs').value.trim();
+  const msg = [
+    '*Novo pedido: Bom Filé Casa de Carnes*', '',
+    ...linhas, '',
+    entrega ? `Entrega: ${brl(TAXA)}` : '',
+    `*Total: ${brl(t + (entrega?TAXA:0))}${aConfirmar?' + itens a confirmar':''}*`, '',
+    `Nome: ${nome}`,
+    entrega ? `Receber: Entrega em ${document.getElementById('cidade').value} (${end})` : `Receber: Retirada na loja ${document.getElementById('loja').value}`,
+    `Para: ${d}/${m}/${a}`,
+    `Pagamento: ${pag()}`,
+    obs ? `Obs.: ${obs}` : '',
+  ].filter((l,i,arr)=>!(l==='' && arr[i-1]==='')).filter((l,i)=>l!==''||i>0).join('\n').replace(/\n{3,}/g,'\n\n').trim();
+  window.open(`https://wa.me/${WHATS}?text=${encodeURIComponent(msg)}`, '_blank');
+};
+atualizar();
+</script>
+</body>
+</html>
